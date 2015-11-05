@@ -2,12 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Dimitri on 03/11/2015.
+ * A 3x3 Sudoku grid
  */
 public class CellGroup extends JPanel {
 
     CellGroup(){
-        super(new GridLayout(3,3,2,2));
+        super(new GridLayout(3,3,1,1));
         for(int i=0; i<9; i++)
             add(new Cell(i));
     }

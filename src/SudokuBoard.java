@@ -1,5 +1,5 @@
 /**
- * Created by Dimitri on 03/11/2015.
+ *  GUI for Sudoku Board
  */
 
 import java.awt.*;
@@ -8,12 +8,12 @@ import javax.swing.*;
 
 public class SudokuBoard extends JFrame{
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Rectangle rect = new Rectangle(screenSize.width/2 - screenSize.width/4,
-            screenSize.height/2 - screenSize.height/4, screenSize.width/2,
-            screenSize.height/2);
+    Rectangle rect = new Rectangle(screenSize.width/4 - screenSize.width/8,
+            screenSize.height/4 - screenSize.height/8, screenSize.width/4,
+            screenSize.height/4);
     final static int maxGap = 2;
     JButton solveButton = new JButton("Solve");
-    GridLayout sudokuGrid = new GridLayout(9,9);
+    GridLayout sudokuGrid = new GridLayout(3,3,5,5);
 
 
 
@@ -32,20 +32,20 @@ public class SudokuBoard extends JFrame{
         // Set up components preferred size
         sudokuPanel.setPreferredSize(new Dimension(rect.width, rect.height));
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                sudokuPanel.add(new JButton("Button"));
-            }
-            }
+        for (int i = 0; i < 9; i++)
+            sudokuPanel.add(new CellGroup());
+
+
+
             // add buttons to set up horizontal and vertical gaps
+            buttons.add(new Label(""));
             buttons.add(solveButton);
 
             solveButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
-                    sudokuGrid.setHgap(5);
-                    sudokuGrid.setVgap(5);
-                    sudokuGrid.layoutContainer(sudokuPanel);
+
+
                 }
             });
 
@@ -61,14 +61,14 @@ public class SudokuBoard extends JFrame{
     private static void createAndShowGUI(){
         // Create and set up the window
         SudokuBoard frame = new SudokuBoard("Sudoku Board");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
-       /* JMenuBar mBar = new JMenuBar();
+       /*JMenuBar mBar = new JMenuBar();
         mBar.setOpaque(true);
         mBar.setBackground(new Color(0, 255, 255));
         mBar.setPreferredSize(new Dimension(200, 20));
-    */
+        */
 
         //Set up the content pane
         frame.addComponentsToPane(frame.getContentPane());
@@ -102,7 +102,7 @@ public class SudokuBoard extends JFrame{
         javax.swing.SwingUtilities.invokeLater(new Runnable(){
             public void run() {
                 createAndShowGUI();
-            };
+            }
         });
 
 
