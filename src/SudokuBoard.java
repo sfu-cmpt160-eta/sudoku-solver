@@ -5,40 +5,59 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import napkin.NapkinLookAndFeel;
+import java.util.Random;
 
 public class SudokuBoard extends JFrame{
+
+   private Puzzle pzl;
+
+    // calculates dimension for preferredSize to be used by sudokuPanel
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Rectangle rect = new Rectangle(screenSize.width/4 - screenSize.width/8,
             screenSize.height/4 - screenSize.height/8, screenSize.width/4,
             screenSize.height/4);
-    final static int maxGap = 2;
+
+
     JButton solveButton = new JButton("Solve");
-    GridLayout sudokuGrid = new GridLayout(3,3,5,5);
+
+    // layout for 9 cellgroups
+    GridLayout sudokuGrid = new GridLayout(3,3,6,6);
 
 
 
 
-    public SudokuBoard(String name){
+    public SudokuBoard(Puzzle pzl, String name){
         super(name);
         setResizable(false);
+        this.pzl = pzl;
+
     }
 
     public void addComponentsToPane(final Container pane) {
+
+        // panel for the Sudoku Board
         final JPanel sudokuPanel = new JPanel();
         sudokuPanel.setLayout(sudokuGrid);
+
+        // panel for the solve button, possibly other buttons if needed later
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(3, 1));
 
-        // Set up components preferred size
+        // Set up preferred size
         sudokuPanel.setPreferredSize(new Dimension(rect.width, rect.height));
 
+
+
+        // intialize sudoku panel with 9 cell groups
         for (int i = 0; i < 9; i++)
-            sudokuPanel.add(new CellGroup());
+            sudokuPanel.add(new CellGroup(pzl.getBlockAt(i)));
 
 
 
             // add buttons to set up horizontal and vertical gaps
-            buttons.add(new Label(""));
+            buttons.add(new JButton("Return"));
+            buttons.add(new JButton("Undo"));
             buttons.add(solveButton);
 
             solveButton.addActionListener(new ActionListener() {
@@ -50,7 +69,6 @@ public class SudokuBoard extends JFrame{
             });
 
             pane.add(sudokuPanel, BorderLayout.WEST);
-            //  pane.add(new JSeparator(), BorderLayout.CENTER);
             pane.add(buttons, BorderLayout.EAST);
 
         }
@@ -59,8 +77,19 @@ public class SudokuBoard extends JFrame{
 
     // Create the GUI and show it
     private static void createAndShowGUI(){
+
+       /* Random rn = new Random();//initialize random
+        Puzzle pzl = new Puzzle();
+        for(int i=0;9>i;i++){
+            for(int j=0;9>j;j++)
+                pzl.fill(rn.nextInt(9)+1, i, j);
+        }*/
+
+        Puzzle pzl = new Puzzle();
+        pzl.autoPuzzle();
+
         // Create and set up the window
-        SudokuBoard frame = new SudokuBoard("Sudoku Board");
+        SudokuBoard frame = new SudokuBoard(pzl,"Sudoku Board");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
@@ -72,6 +101,17 @@ public class SudokuBoard extends JFrame{
 
         //Set up the content pane
         frame.addComponentsToPane(frame.getContentPane());
+        frame.setUndecorated(false);
+
+        try
+        {
+            UIManager.setLookAndFeel(new NapkinLookAndFeel());
+            SwingUtilities.updateComponentTreeUI(frame);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 
         // Display window
         frame.pack();
@@ -80,22 +120,10 @@ public class SudokuBoard extends JFrame{
 
 
 
-    public static void main(String[] args){
-        /* Use an appropriate Look and Feel */
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+    public static void main(String[] args) {
 
-        } catch (UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        /* Turn off metal's use of bold fonts */
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
+
+
 
         // Schedule a job for the event dispatch thread:
         // creating and showing this applicaiton's GUI.
