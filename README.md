@@ -8,8 +8,8 @@ Sudoku solver and game application made with Java Swing library
 
 | Feature |
 |---|
-|  sudoku generator |
-| sudoku solver|
+|  puzzle generator |
+| puzzle solver|
 | sudoku grid |
 
 ## In-progress
