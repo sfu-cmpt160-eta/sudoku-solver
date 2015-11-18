@@ -2,7 +2,15 @@
 
 Sudoku solver and game application made with Java Swing library
 
-## Must have features in-progress
+## Implemented 
+
+| Feature |
+|---|
+|  sudoku generator |
+| sudoku solver|
+| sudoku grid |
+
+## In-progress
 
 | Feature        | 
 | ------------- |
