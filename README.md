@@ -1,6 +1,8 @@
-## sudoku-solver
+## Sudoku Solver
 
 Sudoku solver and game application made with Java Swing library
+
+## SFU CMPT 160 Group Project
 
 ## Implemented 
 
