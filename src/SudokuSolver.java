@@ -4,7 +4,7 @@
  *
  * @author peter
  */
-public class SudokuSolver {
+class SudokuSolver {
 
     /**args) {
         

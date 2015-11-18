@@ -3,10 +3,11 @@
  * @author peter
  */
 //The 3x3 block of numbers
-public class Block 
+@SuppressWarnings("UnusedReturnValue")
+public class Block
 {
-   int[] numbers= new int[9];
-   int baseNumber =0; // How many numbers are in the Block
+   private int[] numbers= new int[9];
+   private int baseNumber =0; // How many numbers are in the Block
 
 
 

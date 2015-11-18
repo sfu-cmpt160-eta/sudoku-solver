@@ -3,11 +3,10 @@ import java.util.Random;
  *
  * @author peter
  */
-public class Puzzle {
+class Puzzle {
     //[Column][Row], starting from bottom left
-int[][] puz = new int[9][9];// 
-
-Block[] blocks;
+    private int[][] puz = new int[9][9];
+    private Block[] blocks;
   
 
     public Puzzle(){
@@ -23,7 +22,7 @@ Block[] blocks;
    //	square = w/3 +3(h/3)
     }
     
-    public boolean fill(int n, int row, int col){//fills in a number at the location
+    private boolean fill(int n, int row, int col){//fills in a number at the location
         int location = (col/3)+3*(row/3);//derived attribute, to organize blocks
       System.out.println(location);
         if( this.isValid(n, row, col)){
@@ -35,7 +34,7 @@ Block[] blocks;
     }
     
     
-    public boolean isValid(int n, int row, int col)
+    private boolean isValid(int n, int row, int col)
     {int location = (col/3)+3*(row/3);
         for(int i =0;i<9;i++){
            if(puz[col][i]==n||puz[i][row]==n||!blocks[location].isValid(n)||puz[col][row]!=0)
@@ -43,12 +42,14 @@ Block[] blocks;
         return true;
       }
     
-    public void  solve()
-    {
-    
-    
-    }
-    
+// --Commented out by Inspection START (17/11/2015 10:52 PM):
+//    public void  solve()
+//    {
+//
+//
+//    }
+// --Commented out by Inspection STOP (17/11/2015 10:52 PM)
+
 @Override
     public String toString()//creates a 9x9 string of numbers
         {
@@ -63,7 +64,7 @@ Block[] blocks;
     }
     
   
-    public boolean solvable()//checks to see if program is theoretically solvable
+    private boolean solvable()//checks to see if program is theoretically solvable
     {  int uniques = this.UniqueNumbers();
         return this.numbersFilled() > 16 && uniques > 7;
     }
@@ -77,7 +78,7 @@ Block[] blocks;
         }
         return count;}
    
-   int UniqueNumbers(){//returns number of unique numbers in puzzle
+   private int UniqueNumbers(){//returns number of unique numbers in puzzle
     int totalNum = 0;
      boolean[] uniqueNum = {false, false, false, false, false, false, false, false, false };//each false corresponds to a number
 
@@ -115,13 +116,17 @@ Block[] blocks;
    
    }
 
-    public int[][] getPuz(){
-        return puz;
-    }
+// --Commented out by Inspection START (17/11/2015 10:52 PM):
+//    public int[][] getPuz(){
+//        return puz;
+//    }
+// --Commented out by Inspection STOP (17/11/2015 10:52 PM)
 
-    public Block[] getBlocks(){
-        return blocks;
-    }
+// --Commented out by Inspection START (17/11/2015 10:52 PM):
+//    public Block[] getBlocks(){
+//        return blocks;
+//    }
+// --Commented out by Inspection STOP (17/11/2015 10:52 PM)
 
     public Block getBlockAt(int index){
         return blocks[index];

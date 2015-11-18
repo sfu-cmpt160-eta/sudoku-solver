@@ -6,90 +6,108 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import napkin.NapkinLookAndFeel;
-import java.util.Random;
 
-public class SudokuBoard extends JFrame{
+class SudokuBoard extends JFrame{
 
    private Puzzle pzl;
+   private CellGroup[] cellGroups = new CellGroup[9];
 
     // calculates dimension for preferredSize to be used by sudokuPanel
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Rectangle rect = new Rectangle(screenSize.width/4 - screenSize.width/8,
-            screenSize.height/4 - screenSize.height/8, screenSize.width/4,
-            screenSize.height/4);
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private Rectangle rect = new Rectangle(screenSize.width/4 - screenSize.width/8,
+            screenSize.height/4 - screenSize.height/8, screenSize.width/3,
+            screenSize.height/3);
 
 
-    JButton solveButton = new JButton("Solve");
+
+    private JButton returnButton = new JButton("Return");
+    private JButton undoButton = new JButton("Undo");
+    private JButton solveButton = new JButton("Solve");
+
 
     // layout for 9 cellgroups
-    GridLayout sudokuGrid = new GridLayout(3,3,6,6);
+    private GridLayout sudokuGrid = new GridLayout(3,3,12,12);
 
 
-
-
-    public SudokuBoard(Puzzle pzl, String name){
-        super(name);
+    private SudokuBoard(Puzzle pzl){
+        super("Sudoku Board");
+        JRootPane root = new JRootPane();
+        this.setRootPane(root);
         setResizable(false);
         this.pzl = pzl;
 
     }
 
-    public void addComponentsToPane(final Container pane) {
+    private void addComponentsToPane(final Container pane) {
 
         // panel for the Sudoku Board
         final JPanel sudokuPanel = new JPanel();
         sudokuPanel.setLayout(sudokuGrid);
-
-        // panel for the solve button, possibly other buttons if needed later
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(3, 1));
-
+        // intialize sudoku panel with 9 cell groups
+        for (int i = 0; i < 9; i++) {
+            sudokuPanel.add(new CellGroup(pzl.getBlockAt(i)));
+            cellGroups[i] = new CellGroup(pzl.getBlockAt(i));
+        }
         // Set up preferred size
         sudokuPanel.setPreferredSize(new Dimension(rect.width, rect.height));
 
+        // panel for the return, undo, solve buttons
+        JPanel rightButtonPanel = new JPanel();
+        rightButtonPanel.setLayout(new GridLayout(3, 1, 6, 6));
+        // add return, undo and solve buttons
+        returnButton.setFont(new Font("Algerian", Font.ITALIC, 20));
+        undoButton.setFont(new Font("Algerian", Font.ITALIC, 20));
+        solveButton.setFont(new Font("Algerian", Font.ITALIC, 20));
+        rightButtonPanel.add(returnButton);
+        rightButtonPanel.add(undoButton);
+        rightButtonPanel.add(solveButton);
+
+        // panel for number buttons
+        JPanel bottomButtonPanel = new JPanel();
+        bottomButtonPanel.setLayout(new GridLayout(1,9,20,20));
+        // add number buttons
+        JButton[] bottomButtons = new JButton[9];
+        for(int i=0;9>i;i++){
+            bottomButtons[i] = new JButton();
+            bottomButtons[i].setFont(new Font("Algerian", Font.ITALIC, 20));
+            bottomButtons[i].setText(String.valueOf(i+1));
+            bottomButtonPanel.add(bottomButtons[i]);
+        }
 
 
-        // intialize sudoku panel with 9 cell groups
-        for (int i = 0; i < 9; i++)
-            sudokuPanel.add(new CellGroup(pzl.getBlockAt(i)));
 
-
-
-            // add buttons to set up horizontal and vertical gaps
-            buttons.add(new JButton("Return"));
-            buttons.add(new JButton("Undo"));
-            buttons.add(solveButton);
-
-            solveButton.addActionListener(new ActionListener() {
+            // TODO once start menu is created, code this button to go back there
+            returnButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
-
-
                 }
             });
 
+            // TODO create mechanism for undo button
+            // link to UndoManager example: http://www.java2s.com/Code/Java/Swing-JFC/TheuseofUndoManager.htm
+            undoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               }
+            });
+
             pane.add(sudokuPanel, BorderLayout.WEST);
-            pane.add(buttons, BorderLayout.EAST);
+            pane.add(rightButtonPanel, BorderLayout.EAST);
+            pane.add(bottomButtonPanel, BorderLayout.SOUTH);
 
         }
+
+
 
 
 
     // Create the GUI and show it
     private static void createAndShowGUI(){
 
-       /* Random rn = new Random();//initialize random
-        Puzzle pzl = new Puzzle();
-        for(int i=0;9>i;i++){
-            for(int j=0;9>j;j++)
-                pzl.fill(rn.nextInt(9)+1, i, j);
-        }*/
-
+        // Creates a random puzzle, though atm not guaranteed to be valid
         Puzzle pzl = new Puzzle();
         pzl.autoPuzzle();
 
         // Create and set up the window
-        SudokuBoard frame = new SudokuBoard(pzl,"Sudoku Board");
+        SudokuBoard frame = new SudokuBoard(pzl);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
@@ -116,6 +134,8 @@ public class SudokuBoard extends JFrame{
         // Display window
         frame.pack();
         frame.setVisible(true);
+        frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+
     }
 
 
