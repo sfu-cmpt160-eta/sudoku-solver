@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import napkin.NapkinLookAndFeel;
 
-class SudokuBoard extends JFrame{
+class SudokuFrame extends JFrame{
 
    private Puzzle pzl;
    private CellGroup[] cellGroups = new CellGroup[9];
@@ -29,27 +29,30 @@ class SudokuBoard extends JFrame{
     private GridLayout sudokuGrid = new GridLayout(3,3,12,12);
 
 
-    private SudokuBoard(Puzzle pzl){
+    private SudokuFrame(){
         super("Sudoku Board");
         JRootPane root = new JRootPane();
         this.setRootPane(root);
         setResizable(false);
-        this.pzl = pzl;
+        pzl = new Puzzle();
+        pzl.autoPuzzle();
 
     }
 
     private void addComponentsToPane(final Container pane) {
 
-        // panel for the Sudoku Board
-        final JPanel sudokuPanel = new JPanel();
+        // panel for the Sudoku Frame
+        JPanel sudokuPanel = new JPanel();
         sudokuPanel.setLayout(sudokuGrid);
+
         // intialize sudoku panel with 9 cell groups
-        for (int i = 0; i < 9; i++) {
-            sudokuPanel.add(new CellGroup(pzl.getBlockAt(i)));
-            cellGroups[i] = new CellGroup(pzl.getBlockAt(i));
-        }
+        initCellGroups();
+        for(int i=0;i<9;i++)
+         sudokuPanel.add(cellGroups[i]);
+
         // Set up preferred size
         sudokuPanel.setPreferredSize(new Dimension(rect.width, rect.height));
+
 
         // panel for the return, undo, solve buttons
         JPanel rightButtonPanel = new JPanel();
@@ -102,12 +105,9 @@ class SudokuBoard extends JFrame{
     // Create the GUI and show it
     private static void createAndShowGUI(){
 
-        // Creates a random puzzle, though atm not guaranteed to be valid
-        Puzzle pzl = new Puzzle();
-        pzl.autoPuzzle();
 
         // Create and set up the window
-        SudokuBoard frame = new SudokuBoard(pzl);
+        SudokuFrame frame = new SudokuFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
@@ -138,7 +138,23 @@ class SudokuBoard extends JFrame{
 
     }
 
+    private class ButtonListener implements ActionListener {
+        ButtonListener(){
+        }
 
+        public void actionPerformed(ActionEvent e){
+
+
+
+        }
+    }
+
+    public void initCellGroups() {
+        for (int i=0; i<9; i=i+3){
+            for(int j=0;j<9; j=j+3)
+            cellGroups[i + (int) Math.ceil((double)j/3)] = new CellGroup(i,j, pzl);
+        }
+    }
 
     public static void main(String[] args) {
 

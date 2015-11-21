@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 /**
@@ -9,16 +7,13 @@ import java.awt.event.ActionListener;
         */
 class CellGroup extends JPanel {
 
-    private Cell[] cells = new Cell[9];
-    private int numberOfCells;
-
-    // constructor uses block object to copy numbers from
-    CellGroup(Block block){
+    // fill cellgroup with cells with their respective values
+    CellGroup(int row, int col, Puzzle pzl){
         super(new GridLayout(3,3,1,1));
-        for(int i=0; i<9; i++) {
-            add(new Cell(block.getNumberAt(i)));
-            cells[i] = new Cell(block.getNumberAt(i));
-            numberOfCells++;
+        for(int i=row; i<row+3; i++) {
+            for(int j=col; j<col+3; j++) {
+                this.add(new Cell(pzl.valAt(i,j)));
+            }
         }
     }
 

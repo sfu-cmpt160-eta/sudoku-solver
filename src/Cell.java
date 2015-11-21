@@ -8,10 +8,7 @@ import java.awt.event.ActionListener;
  */
 class Cell extends JButton implements ActionListener{
 
-    // --Commented out by Inspection (17/11/2015 10:51 PM):private Color pressedBackgroundColor;
     private int value;
-
-
 
     Cell(int value){
         super("" + value);
