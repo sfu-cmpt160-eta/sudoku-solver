@@ -1,39 +1,40 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  * A single cell on a sudoku board
  */
-class Cell extends JButton implements ActionListener{
+class Cell extends JButton {
 
     private int value;
+    private int row, col;
 
-    Cell(int value){
+
+    Cell(int value,int row,int col){
         super("" + value);
         this.setFont(new Font("Algerian", Font.ITALIC, 20));
         this.value = value;
+        this.row = row;
+        this.col = col;
         setFocusable(true);
-        if(value == 0){
+        if(value == 0) {
             this.setText("");
         }
-
-        addActionListener(this);
-
-
-
     }
 
-// --Commented out by Inspection START (17/11/2015 11:17 PM):
-//    public int getValue(){
-//        return value;
-//    }
-// --Commented out by Inspection STOP (17/11/2015 11:17 PM)
-
-    public void actionPerformed(ActionEvent e){
-       this.requestFocusInWindow();
+    public int getRow() {
+        return row;
     }
+
+    public int getCol() {
+        return col;
+    }
+
+
+
+
+
 
 
 

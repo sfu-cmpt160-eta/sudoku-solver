@@ -25,11 +25,10 @@ public class Puzzle {
 
         puz[row][col] = n;
 
-
     }
 
 
-    private boolean isValid(int n, int row, int col)
+    public boolean isValid(int n, int row, int col)
     { int rowStart = (row/3)*3;
         int colStart = (col/3)*3;
         for(int i =0;i<9;i++){
@@ -266,6 +265,20 @@ public class Puzzle {
     public int valAt(int row, int col){
         return puz[row][col];
     }
+
+    public void testPuzzle()
+    {
+        puz = new int[][]{{0,  1,  0,  4,  6,  0,  0,  2,  9},
+                {0,  6,  0,  0,  7,  8,  0,  5,  0},
+                {0,  8,  0,  3,  9,  2, 0 ,  0,  0},
+                {1,  3,  6,  2,  8,  4, 0 ,  9,  0},
+                {0,  9,  7,  6, 0 ,  3,0  ,  1, 0},
+                {4,  2,  5,  7,0  ,  9,0  ,  8,  0},
+                {0,0  ,  8, 0 ,  2,  6, 0 ,  7, 0 },
+                {0,0  ,  1, 0 ,  3,  7, 0 ,  4,  6},
+                {6,0  ,  2,0  ,  4, 0 , 0 ,  3,  8}};
+    }
+
 
     // test method
     public static void main(String[] args){
