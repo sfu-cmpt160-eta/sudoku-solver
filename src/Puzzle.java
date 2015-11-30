@@ -1,13 +1,16 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import java.util.Random;
 /**
  *
  * @author peter
  */
-@SuppressWarnings("unused")
 public class Puzzle {
     //[Row][Col], starting from top right
-    private int[][] puz = new int[9][9];//
-
+    int[][] puz = new int[9][9];//
+    int[][] solved = new int[9][9];
 
     public Puzzle(){
 
@@ -18,12 +21,16 @@ public class Puzzle {
             }
         }
 
-        //	square = w/3 +3(h/3)
+
     }
 
-    private void fill(int n, int row, int col){//fills in a number at the location
-
-        puz[row][col] = n;
+    public boolean fill(int n, int row, int col){//fills in a number at the location
+        if (this.isValid(n, row, col) &&n>0)//if the number input is not 0 and is valid, put it in the location
+        {     puz[row][col] = n;
+            return true;
+        }
+        else
+            return false;
 
     }
 
@@ -38,16 +45,16 @@ public class Puzzle {
         return true;
     }
 
-    public boolean solve(int row, int col)
+    public boolean  solve(int row, int col)
     {
         int i;
         if(row<9&&col<9 )
         {
             if(puz[row][col]!=0)
             {
-                if ((col + 1) < 9) return solve(row, col + 1);
-                else
-                    return (row + 1) >= 9 || solve(row + 1, 0);
+                if((col+1)<9) return solve(row, col+1);
+                else if((row+1)<9) return solve(row+1, 0);
+                else return true;
             }
             else
             {
@@ -93,7 +100,11 @@ public class Puzzle {
 
     public boolean solvable()//checks to see if program is theoretically solvable
     {  int uniques = this.UniqueNumbers();
-        return this.numbersFilled() > 16 && uniques > 7;
+        if (this.numbersFilled()>16&& uniques>7){
+            return true;
+
+        }
+        return false;
     }
     public int numbersFilled()//returns amount of spots filled in grid
     {int count = 0;
@@ -105,7 +116,7 @@ public class Puzzle {
         }
         return count;}
 
-    private int UniqueNumbers(){//returns number of unique numbers in puzzle
+    int UniqueNumbers(){//returns number of unique numbers in puzzle
         int totalNum = 0;
         boolean[] uniqueNum = {false, false, false, false, false, false, false, false, false };//each false corresponds to a number
 
@@ -127,7 +138,7 @@ public class Puzzle {
     {
         this.basePuzzle();
         Random rand = new Random();
-        int r =rand.nextInt(11)+2;
+        int r =rand.nextInt(450)+7;
         for (int i=0;i< r;i++)
         {
 
@@ -135,8 +146,14 @@ public class Puzzle {
             this.randRows(rand.nextInt(3)+1);
             this.randRBlocks();
             this.randVBlocks();
+            this.transpose();
+            if(i%2!=0)//more pseudo randomness
+                this.rotate();
+            else
+                this.rotate180();
         }
-
+        solved = puz;
+        this.removeNumbers();
     }
 
 
@@ -144,7 +161,7 @@ public class Puzzle {
 
     public int[] findNumLoc(int n)
     {
-        int temp;
+        int temp =0;
         int bar = 0;
         int[] locations = new int[9];
         for (int i =0;i<9;i++)
@@ -160,9 +177,9 @@ public class Puzzle {
         }
         return locations;
     }
-    private void basePuzzle()
+    public void basePuzzle()//base puzzle seed for all made puzzles
     {
-        puz = new int[][]{{7,  1,  3,  4,  6,  5,  8,  2,  9},
+        int[][] newpuz = {{7,  1,  3,  4,  6,  5,  8,  2,  9},
                 {2,  6,  9,  1,  7,  8,  3,  5,  4},
                 {5,  8,  4,  3,  9,  2,  1,  6,  7},
                 {1,  3,  6,  2,  8,  4,  7,  9,  5},
@@ -171,9 +188,11 @@ public class Puzzle {
                 {3,  4,  8,  5,  2,  6,  9,  7,  1},
                 {9,  5,  1,  8,  3,  7,  2,  4,  6},
                 {6,  7,  2,  9,  4,  1,  5,  3,  8}};
+        puz = newpuz;
+        solved =puz;
     }
 
-    private void randColumns(int max)
+    void randColumns(int max)
     {
         int temp;
         int row1;
@@ -202,7 +221,7 @@ public class Puzzle {
         }
     }
 
-    private void randRows(int max)//swaps
+    void randRows(int max)//swaps
     {
         int temp;
         int row1;
@@ -229,11 +248,11 @@ public class Puzzle {
         }
     }
 
-    private void randVBlocks()
+    public void randVBlocks()
     {Random rand = new Random();
-        int temp;
+        int temp = 0;
         int row1= 0;
-        int row2=rand.nextInt(1)+ 3;
+        int row2=rand.nextInt(1)+1*3;
         for(int c = 0;c<3;c++){
             for (int i=0;i<9;i++)
             {
@@ -245,11 +264,11 @@ public class Puzzle {
             row2++;
         }
     }
-    private void randRBlocks()
+    public void randRBlocks()
     {Random rand = new Random();
-        int temp;
+        int temp = 0;
         int row1= 0;
-        int row2=rand.nextInt(1)+ 3;
+        int row2=rand.nextInt(1)+1*3;
         for(int c = 0;c<3;c++){
             for (int i=0;i<9;i++)
             {
@@ -260,6 +279,51 @@ public class Puzzle {
             row1++;
             row2++;
         }
+    }
+
+    void transpose()
+    {
+        int temp =0;
+        for(int i =0;i<9;i++)
+        {
+            for (int j=i;j<9;j++)
+            {
+                temp =  puz[i][j];
+                puz[i][j]=puz[j][i];
+                puz[j][i]=temp;
+            }
+        }
+
+    }
+    void rotate()
+    {
+        this.transpose();
+        this.rotate180();
+    }
+    void rotate180()
+    {int temp = 0;
+        for (int i =0;i<9;i++)
+        {
+
+            for(int j=0;j<4;j++)
+            {   temp = puz[j][i];
+                puz[j][i] = puz[8-j][i];
+                puz[8-j][i] =temp;
+
+            }
+        }
+    }
+
+    void removeNumbers()
+    {    Random rand = new Random();
+        while(this.numbersFilled()>30)
+        {
+            puz[rand.nextInt(9)][rand.nextInt(9)]=0;
+        }
+    }
+    int hint(int row, int col)
+    {
+        return solved[row][col];
     }
 
     public int valAt(int row, int col){
@@ -280,18 +344,5 @@ public class Puzzle {
     }
 
 
-    // test method
-    public static void main(String[] args){
-        Puzzle pTest = new Puzzle();
-        pTest.autoPuzzle();
-        /*for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-                System.out.print(Integer.toString(pTest.valAt(i, j)));
-                if(j+1%2==0)
-                    System.out.print(" ");
-            }
-            System.out.print("\n");
-        }*/
-        System.out.print(pTest.toString());
-    }
 }
+

@@ -5,7 +5,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import napkin.NapkinLookAndFeel;
+import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 import java.awt.event.ActionEvent;
 
 class SudokuFrame extends JFrame {
@@ -119,7 +119,7 @@ class SudokuFrame extends JFrame {
         mBar.setPreferredSize(new Dimension(200, 20));
         */
 
-        //Set up the content pane
+        /* Set up the content pane */
         frame.addComponentsToPane(frame.getContentPane());
         frame.setUndecorated(false);
 
@@ -157,24 +157,42 @@ class SudokuFrame extends JFrame {
             JButton source = (JButton) e.getSource();
             int value = Integer.parseInt(source.getText());
             if (pzl.isValid(value, row, col)) {
-                if (value == 1)
+                if (value == 1) {
                     cells[row][col].setText("1");
-                else if (value == 2)
+                    pzl.fill(1,row,col);
+                }
+                else if (value == 2) {
                     cells[row][col].setText("2");
-                else if (value == 3)
-                    cells[row][col].setText("3");
-                else if (value == 4)
-                    cells[row][col].setText("4");
-                else if (value == 5)
-                    cells[row][col].setText("5");
-                else if (value == 6)
-                    cells[row][col].setText("6");
-                else if (value == 7)
-                    cells[row][col].setText("7");
-                else if (value == 8)
+                    pzl.fill(2,row,col);
+                }
+                else if (value == 3) {
+                        cells[row][col].setText("3");
+                    pzl.fill(3,row,col);
+                    }
+                else if (value == 4) {
+                        cells[row][col].setText("4");
+                    pzl.fill(4,row,col);
+                    }
+                else if (value == 5) {
+                        cells[row][col].setText("5");
+                    pzl.fill(5,row,col);
+                    }
+                else if (value == 6) {
+                        cells[row][col].setText("6");
+                    pzl.fill(6,row,col);
+                    }
+                else if (value == 7) {
+                        cells[row][col].setText("7");
+                    pzl.fill(7,row,col);
+                    }
+                else if (value == 8) {
                     cells[row][col].setText("8");
-                else if (value == 9)
+                    pzl.fill(8,row,col);
+                }
+                else if (value == 9) {
                     cells[row][col].setText("9");
+                    pzl.fill(9,row,col);
+                }
             }
         }
     }
@@ -187,6 +205,7 @@ class SudokuFrame extends JFrame {
                 source.setSelected(true);
                 row = source.getRow();
                 col = source.getCol();
+                cells[row][col].setBackground(Color.DARK_GRAY);
             }
         }
 
